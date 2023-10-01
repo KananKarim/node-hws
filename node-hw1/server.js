@@ -13,7 +13,17 @@ const server = http.createServer((req, res) => {
   }));
 });
 
-const port = process.argv[2] ? process.argv[2].split('=')[1] : 3000;
+let port = 3000; 
+
+
+process.argv.forEach(arg => {
+  if (arg.startsWith('port=')) {
+    const portArg = arg.split('=')[1];
+    if (!isNaN(portArg)) {
+      port = portArg;
+    }
+  }
+});
 
 server.listen(port, '127.0.0.1', () => {
   console.log(`server is running at port ${port}`);
