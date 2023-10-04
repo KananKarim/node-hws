@@ -1,6 +1,7 @@
-import http from "http";
-import url from "url";
-import fs from "fs";
+import express from 'express';
+import fs from 'fs';
+import dotenv from 'dotenv'
+dotenv.config()
 
 let newsArticles;
 try {
@@ -11,11 +12,12 @@ try {
     newsArticles = [];
 }
 
-const server = http.createServer((req, res) => {
+const app = express();
+
+app.get('/', (req, res) => {
     try {
-        const queryObject = url.parse(req.url,true).query;
-        const page = Number(queryObject.page) || 1;
-        const size = Number(queryObject.size) || 10;
+        const page = Number(req.query.page) || 1;
+        const size = Number(req.query.size) || 10;
         const start = (page - 1) * size;
         const end = start + size;
         const paginatedArticles = newsArticles.slice(start, end);
@@ -31,6 +33,6 @@ const server = http.createServer((req, res) => {
 const host = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
 
-server.listen(port, host, () => {
+app.listen(port, host, () => {
     console.log(`Server is running on http://${host}:${port}`);
 });
