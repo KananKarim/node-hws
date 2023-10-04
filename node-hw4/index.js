@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(logger);
 app.use(router);
 
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 3000;
+const host = process.env.HOST 
+const port = process.env.PORT
 
 app.listen(port, host, () => console.log(`Server is running on ${host}:${port}`));
