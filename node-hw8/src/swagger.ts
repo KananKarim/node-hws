@@ -33,8 +33,8 @@ const doc = {
       password: "12345",
     },
     NewsPost: {
-      title: "kasjakjslkajskajslasjlas",
-      text: "kasjakjslkajskajslasjlas",
+      title: "news_post",
+      text: "news_post",
     },
   },
 };
