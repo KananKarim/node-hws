@@ -1,0 +1,416 @@
+{
+	"info": {
+		"_postman_id": "7f2e5b91-6688-4595-96cc-ba901e100fba",
+		"name": "news-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12765963"
+	},
+	"item": [
+		{
+			"name": "get newspost by query",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get all newsposts\", function () {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(responseBody).to.be.an('array').and.not.empty;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{loginToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/{{newsPostsPath}}/?page=2&size=10",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{newsPostsPath}}",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get newspost by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Receiving a single news item\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.json()).not.to.be.null;\r",
+							"    pm.expect(pm.response.json()).to.have.property(\"id\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{loginToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"kenan@gmail.com\",\r\n    \"password\":\"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/{{newsPostsPath}}/3",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{newsPostsPath}}",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add newspost",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('adding newspost item', function () {\r",
+							"    pm.response.to.be.json\r",
+							"    const responseData = pm.response.json()\r",
+							"\r",
+							"    pm.expect(responseData).to.not.be.empty;\r",
+							"    pm.expect(responseData.message).to.be.equal('created!');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{loginToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"testing2\",\r\n    \"text\": \"testing2\",\r\n    \"authorId\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/{{newsPostsPath}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{newsPostsPath}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit newspost",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('editing newsposts', function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"  \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{loginToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"title\": \"Rare White Tiger Cubs Born at San Diego Zoo\",\r\n    \"text\": \"Exciting news from San Diego Zoo! A pair of rare white tiger cubs were born yesterday. Come witness their adorable cuteness!!!\",\r\n    \"authorId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/{{newsPostsPath}}/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{newsPostsPath}}",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete newspost",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"successful deletion\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData.affected).to.eql(0);\r",
+							"    pm.expect(responseData.raw).to.be.an('array').that.is.empty;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{loginToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/{{newsPostsPath}}/36",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{newsPostsPath}}",
+						"36"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"testing user login\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"\r",
+							"    pm.expect(responseData).to.have.property('message', 'Login successful');\r",
+							"\r",
+							"    pm.expect(responseData).to.have.property('token').and.to.not.be.empty;\r",
+							"\r",
+							"    const tokenParts = responseData.token.split(' ');\r",
+							"\r",
+							"    if (tokenParts.length === 2) {\r",
+							"        pm.environment.set('loginToken', tokenParts[1]);\r",
+							"    } else {\r",
+							"        console.error('Unexpected token format:', responseData.token);\r",
+							"    }\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"newadmin4@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/{{authPath}}/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{authPath}}",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"user registration\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"\r",
+							"    if (pm.response.code === 201) {\r",
+							"        pm.expect(responseData).to.have.property('message', 'Registration successful');\r",
+							"\r",
+							"        pm.expect(responseData).to.have.property('token').and.to.not.be.empty;\r",
+							"\r",
+							"        const tokenParts = responseData.token.split(' ');\r",
+							"\r",
+							"        if (tokenParts.length === 2) {\r",
+							"            pm.environment.set('registerToken', tokenParts[1]);\r",
+							"\r",
+							"        } else {\r",
+							"            console.error('Unexpected token format:', responseData.token);\r",
+							"        }\r",
+							"    } else {\r",
+							"        pm.expect(responseData).to.not.have.property('message', 'Registration successful');\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"kazim\",\r\n    \"email\": \"kazim@gmail.com\",\r\n    \"password\": \"12345\",\r\n    \"confirmPassword\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/{{authPath}}/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{authPath}}",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY5Nzk5NzU5MCwiZXhwIjoxNjk4MDMzNTkwfQ.USKfS7KkNUZwLs18tHKjeg7ybsCnnk8xlX0bKBIXE04",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
