@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-blue-100">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-md w-96">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Register</h2>
+            <form>
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-600">Username</label>
+                    <input type="username" id="username" name="username"
+                        class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter your username" required>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                    <input type="email" id="email" name="email"
+                        class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter your email" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+                    <input type="password" id="password" name="password"
+                        class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter your password" required>
+                </div>
+                <div class="mb-4">
+                    <label for="confirm-password" class="block text-sm font-medium text-gray-600">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password"
+                        class="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Confirm password" required>
+                </div>
+                <button type="submit"
+                    class="w-full bg-indigo-500 text-white text-sm font-semibold py-2 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-50">Register</button>
+                <div id="error-message" class="hidden text-red-600 mt-2 break-all">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    document.querySelector('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.querySelector('#username').value;
+        const email = document.querySelector('#email').value;
+        const password = document.querySelector('#password').value;
+        const confirmPassword = document.querySelector('#confirm-password').value;
+        const response = await fetch('/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({ email, username, password, confirmPassword }),
+        });
+        const data = await response.json();
+        const errorMessageElement = document.querySelector('#error-message');
+
+        if (response.status == 401) {
+            console.log(data.error)
+            errorMessageElement.textContent = 'Error occurred.';
+            errorMessageElement.classList.remove('hidden')
+        } else if (response.ok) {
+            console.log('Register Token:', data.token);
+            localStorage.setItem('token', data.token.split(' ')[1])
+            window.location.href = '/login';
+
+        } else {
+            errorMessageElement.textContent = 'An unexpected error occurred';
+            errorMessageElement.classList.remove('hidden')
+        }
+
+    })
+</script>
+
+</html>
